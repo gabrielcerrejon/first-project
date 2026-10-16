@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Antigravity IDE - Capacidades y Guía</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0b0f19;
+      --card-bg: rgba(23, 32, 54, 0.7);
+      --card-border: rgba(99, 102, 241, 0.2);
+      --card-hover: rgba(99, 102, 241, 0.4);
+      --primary: #6366f1;
+      --primary-gradient: linear-gradient(135deg, #6366f1 0%, #a855f7 50%, #ec4899 100%);
+      --text: #f3f4f6;
+      --text-muted: #9ca3af;
+      --accent: #38bdf8;
+      --success: #10b981;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+      background-image: 
+        radial-gradient(circle at 15% 20%, rgba(99, 102, 241, 0.15) 0%, transparent 40%),
+        radial-gradient(circle at 85% 60%, rgba(168, 85, 247, 0.15) 0%, transparent 40%);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      padding: 4rem 2rem 2rem;
+      text-align: center;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 0.35rem 0.9rem;
+      background: rgba(99, 102, 241, 0.15);
+      border: 1px solid rgba(99, 102, 241, 0.3);
+      border-radius: 9999px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--accent);
+      margin-bottom: 1.5rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      font-size: clamp(2.2rem, 5vw, 3.5rem);
+      font-weight: 800;
+      line-height: 1.2;
+      margin-bottom: 1rem;
+      background: var(--primary-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    p.subtitle {
+      font-size: 1.2rem;
+      color: var(--text-muted);
+      max-width: 700px;
+      margin: 0 auto 2rem;
+    }
+
+    main {
+      flex: 1;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem 5rem;
+      width: 100%;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 3rem;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-radius: 1rem;
+      padding: 2rem;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: var(--primary-gradient);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      border-color: var(--card-hover);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+    }
+
+    .card:hover::before {
+      opacity: 1;
+    }
+
+    .icon-container {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      background: rgba(99, 102, 241, 0.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      margin-bottom: 1.25rem;
+      color: var(--accent);
+    }
+
+    .card h2 {
+      font-size: 1.35rem;
+      margin-bottom: 0.75rem;
+      color: #fff;
+    }
+
+    .card p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .feature-list {
+      list-style: none;
+    }
+
+    .feature-list li {
+      font-size: 0.9rem;
+      color: #e2e8f0;
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .feature-list li::before {
+      content: "✔";
+      color: var(--success);
+      font-weight: bold;
+    }
+
+    .slash-commands-box {
+      background: rgba(15, 23, 42, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 1rem;
+      padding: 2rem;
+      margin-top: 2rem;
+    }
+
+    .slash-commands-box h3 {
+      margin-bottom: 1.25rem;
+      font-size: 1.3rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .cmd-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1rem;
+    }
+
+    .cmd-tag {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 0.5rem;
+      padding: 0.75rem 1rem;
+    }
+
+    .cmd-tag code {
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--accent);
+      font-weight: 600;
+      font-size: 0.95rem;
+      display: block;
+      margin-bottom: 0.25rem;
+    }
+
+    .cmd-tag span {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    footer {
+      text-align: center;
+      padding: 2rem;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .gh-info {
+      background: rgba(56, 189, 248, 0.08);
+      border: 1px dashed var(--accent);
+      border-radius: 0.75rem;
+      padding: 1rem 1.5rem;
+      margin-bottom: 2.5rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .gh-info-icon {
+      font-size: 1.8rem;
+    }
+
+    .gh-info p {
+      font-size: 0.95rem;
+      color: #bae6fd;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="badge">Google DeepMind • Antigravity 2.0</div>
+    <h1>¿Qué puede hacer Antigravity IDE?</h1>
+    <p class="subtitle">Descubre las funciones, capacidades y flujos autónomos de desarrollo asistido con agentes inteligentes.</p>
+  </header>
+
+  <main>
+    <div class="gh-info">
+      <div class="gh-info-icon">🚀</div>
+      <div>
+        <strong>Repositorio sincronizado automáticamente:</strong>
+        <p>Todo cambio realizado dentro de este espacio de trabajo se guarda, versiona y envía automáticamente a tu repositorio de GitHub.</p>
+      </div>
+    </div>
+
+    <div class="grid">
+      <!-- Tarjeta 1 -->
+      <div class="card">
+        <div class="icon-container">⚡</div>
+        <h2>Desarrollo Integral & Full-Stack</h2>
+        <p>Creación, edición y mantenimiento de código en cualquier stack o lenguaje.</p>
+        <ul class="feature-list">
+          <li>Crear proyectos completos desde cero (HTML, JS, React, Node, Python, etc.)</li>
+          <li>Refactorización inteligente y resolución de bugs</li>
+          <li>Lectura y modificación precisa de archivos locales</li>
+          <li>Detección y solución automática de errores y linter</li>
+        </ul>
+      </div>
+
+      <!-- Tarjeta 2 -->
+      <div class="card">
+        <div class="icon-container">🖥️</div>
+        <h2>Terminal & Ejecución de Comandos</h2>
+        <p>Acceso a un entorno Linux real para compilar, probar y gestionar herramientas.</p>
+        <ul class="feature-list">
+          <li>Ejecución de scripts, tests y servidores en segundo plano</li>
+          <li>Instalación de paquetes con <code>npm</code>, <code>pip</code>, etc.</li>
+          <li>Inspección del árbol de directorios y control de procesos</li>
+          <li>Manejo reactivo de tareas sin bloqueos</li>
+        </ul>
+      </div>
+
+      <!-- Tarjeta 3 -->
+      <div class="card">
+        <div class="icon-container">🤖</div>
+        <h2>Multi-Agentes & Subagentes</h2>
+        <p>Capacidad de delegar tareas complejas y orquestar equipos de agentes autónomos.</p>
+        <ul class="feature-list">
+          <li>Subagentes de investigación de código en profundidad</li>
+          <li>Generador integrado de imágenes y recursos visuales</li>
+          <li>Definición dinámica de nuevos agentes especializados</li>
+          <li>Trabajo colaborativo y ejecución concurrente</li>
+        </ul>
+      </div>
+
+      <!-- Tarjeta 4 -->
+      <div class="card">
+        <div class="icon-container">🌐</div>
+        <h2>Navegación e Información Web</h2>
+        <p>Búsqueda e integración de información actualizada y documentación oficial.</p>
+        <ul class="feature-list">
+          <li>Búsqueda web en vivo de soluciones y librerías</li>
+          <li>Lectura directa del contenido de páginas y APIs públicas</li>
+          <li>Análisis de documentación para arquitecturas modernas</li>
+        </ul>
+      </div>
+
+      <!-- Tarjeta 5 -->
+      <div class="card">
+        <div class="icon-container">📊</div>
+        <h2>Artifacts & Visualizaciones</h2>
+        <p>Generación de reportes enriquecidos y documentos interactivos.</p>
+        <ul class="feature-list">
+          <li>Diagramas de arquitectura con Mermaid (secuencias, flujos, ER)</li>
+          <li>Planes de trabajo paso a paso y carruseles interactivos</li>
+          <li>Documentación técnica y guías con enlaces directos</li>
+        </ul>
+      </div>
+
+      <!-- Tarjeta 6 -->
+      <div class="card">
+        <div class="icon-container">⏱️</div>
+        <h2>Automatización & Cron Jobs</h2>
+        <p>Programación de recordatorios, temporizadores y tareas recurrentes.</p>
+        <ul class="feature-list">
+          <li>Cron jobs en segundo plano para monitorización</li>
+          <li>Temporizadores de verificación periódica</li>
+          <li>Disparadores basados en eventos</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Comandos disponibles -->
+    <div class="slash-commands-box">
+      <h3>⌨️ Comandos Slash Disponibles</h3>
+      <div class="cmd-grid">
+        <div class="cmd-tag">
+          <code>/goal</code>
+          <span>Para metas de ejecución larga o nocturna hasta completar el objetivo.</span>
+        </div>
+        <div class="cmd-tag">
+          <code>/plan</code>
+          <span>Planificación detallada paso a paso antes de escribir código.</span>
+        </div>
+        <div class="cmd-tag">
+          <code>/teamwork-preview</code>
+          <span>Trabajo en equipo autónomo con múltiples agentes en paralelo.</span>
+        </div>
+        <div class="cmd-tag">
+          <code>/browser</code>
+          <span>Interacción avanzada o pruebas con navegador web.</span>
+        </div>
+        <div class="cmd-tag">
+          <code>/boost</code>
+          <span>Razonamiento profundo y verificación rigurosa para retos complejos.</span>
+        </div>
+        <div class="cmd-tag">
+          <code>/compact</code>
+          <span>Optimización y resumen del contexto para liberar memoria en el chat.</span>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <p>Generado con Antigravity IDE • Google DeepMind</p>
+  </footer>
+
+</body>
+</html>
